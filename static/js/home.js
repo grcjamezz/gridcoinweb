@@ -9,13 +9,14 @@ function update_data() {
             $("#magnitude").html(data.listrsa.result[1]["Magnitude (Last Superblock)"]);
             $("#lastblockpaid").html(data.listrsa.result[1]["Last Block Paid"]);
             $("#dailyearnings").html(data.listrsa.result[1]["Expected Earnings (Daily)"]);
+            $("#txfee").html(data.getinfo.result.paytxfee);
             $("#cpid").html(data.listrsa.result[1].CPID);
             $("#unlocked_until").html(format_timestamp(data.getinfo.result.unlocked_until));
             $("#version").html(data.getinfo.result.version);
             $("#connections").html(data.getinfo.result.connections);
             $("#blocks").html(data.getinfo.result.blocks);
-            $("#posdifficulty").html(data.getinfo.result.difficulty["proof-of-stake"]);
-            $("#powdifficulty").html(data.getinfo.result.difficulty["proof-of-work"]);
+            $("#posdifficulty").html(data.getinfo.result.difficulty["proof-of-stake"].toFixed(2));
+            $("#powdifficulty").html(data.getinfo.result.difficulty["proof-of-work"].toFixed(2));
         }
     ) .fail(function() {
         $("#balance").html("ERROR");

@@ -20,7 +20,7 @@ function update_data() {
                 tablehtml += "<td>" + dir + "</td>";
                 tablehtml += "<td>" + ver + "</td>";
                 tablehtml += "<td>" + peers[row].addr + "</td>";
-                tablehtml += "<td>" + peers[row].pingtime + "</td>";
+                tablehtml += "<td>" + peers[row].pingtime.toFixed(3) + "</td>";
                 tablehtml += "<td>" + format_timestamp(peers[row].conntime) + "</td>";
                 //tablehtml += "<td>" + lastrecv + "</td>";
                 //tablehtml += "<td>" + lastsend + "</td>";
