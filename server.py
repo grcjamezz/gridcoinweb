@@ -34,10 +34,18 @@ def getinfo():
         json={"method": "getinfo",
               "params": [],
               "id": 1})
-    #print(r.json())
-    return jsonify(getinfo=r.json())
+    print(r.json())
+    getinfo = r.json()
 
-@app.route("/listtransactions")
+    r = requests.post("http://%s" % args.host, auth=(args.user, args.passwd),
+        json={"method": "list",
+              "params": ["rsa"],
+              "id": 1})
+    print(r.json())
+    listrsa = r.json()
+    return jsonify(getinfo=getinfo, listrsa=listrsa)
+
+@app.route("/gettransactions")
 def listtransactions():
     r = requests.post("http://%s" % args.host, auth=(args.user, args.passwd),
         json={"method": "listtransactions",
@@ -46,7 +54,7 @@ def listtransactions():
     #print(r.json())
     return jsonify(listtransactions=r.json())
 
-@app.route("/getpeerinfo")
+@app.route("/getpeers")
 def getpeerinfo():
     r = requests.post("http://%s" % args.host, auth=(args.user, args.passwd),
         json={"method": "getpeerinfo",

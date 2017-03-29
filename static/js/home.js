@@ -2,22 +2,29 @@ function update_data() {
     $.getJSON(
         "http://localhost:8000/getinfo",
         function(data) {
-            $("#version").html(data.getinfo.result["version"]);
-            $("#version").removeClass();
-            $("#balance").html(data.getinfo.result["balance"]);
-            $("#blocks").html(data.getinfo.result["blocks"]);
-            $("#connections").html(data.getinfo.result["connections"]);
-            $("#unlocked_until").html(format_timestamp(data.getinfo.result["unlocked_until"]));
-
+            $("#balance").html(data.getinfo.result.balance);
+            $("#balance").removeClass();
+            $("#stake").html(data.getinfo.result.stake);
+            $("#newmint").html(data.getinfo.result.newmint);
+            $("#magnitude").html(data.listrsa.result[1]["Magnitude (Last Superblock)"]);
+            $("#lastblockpaid").html(data.listrsa.result[1]["Last Block Paid"]);
+            $("#dailyearnings").html(data.listrsa.result[1]["Expected Earnings (Daily)"]);
+            $("#cpid").html(data.listrsa.result[1].CPID);
+            $("#unlocked_until").html(format_timestamp(data.getinfo.result.unlocked_until));
+            $("#version").html(data.getinfo.result.version);
+            $("#connections").html(data.getinfo.result.connections);
+            $("#blocks").html(data.getinfo.result.blocks);
+            $("#posdifficulty").html(data.getinfo.result.difficulty["proof-of-stake"]);
+            $("#powdifficulty").html(data.getinfo.result.difficulty["proof-of-work"]);
         }
     ) .fail(function() {
-        $("#version").html("ERROR");
-        $("#version").removeClass();
-        $("#version").addClass("ERROR");
-        $("#balance").html("");
-        $("#blocks").html("");
-        $("#connections").html("");
+        $("#balance").html("ERROR");
+        $("#balance").removeClass();
+        $("#balance").addClass("ERROR");
+        $("#stake").html("");
+        $("#newmint").html("");
         $("#unlocked_until").html("");
+        $("#version").html("ERROR");
     });
     setTimeout(update_data,5000);
 }

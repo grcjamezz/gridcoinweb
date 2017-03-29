@@ -1,6 +1,6 @@
 function update_data() {
     $.getJSON(
-        "http://localhost:8000/getpeerinfo",
+        "http://localhost:8000/getpeers",
         function(data) {
             var tablehtml="";
             var peers=data.getpeerinfo.result;

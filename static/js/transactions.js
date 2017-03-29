@@ -1,6 +1,6 @@
 function update_data() {
     $.getJSON(
-        "http://localhost:8000/listtransactions",
+        "http://localhost:8000/gettransactions",
         function(data) {
             var tablehtml="";
             var trans=data.listtransactions.result
