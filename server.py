@@ -1,0 +1,56 @@
+from flask import Flask, jsonify
+import argparse
+import json
+import os
+import requests
+
+#from monitor import config
+
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return app.send_static_file("index.html")
+
+@app.route("/transactions.html")
+def transactions():
+    return app.send_static_file("transactions.html")
+
+@app.route("/static/<path>")
+def staticfiles(path):
+    return app.send_static_file(path)
+
+@app.route("/favicon.ico")
+def favicon():
+    return app.send_static_file("images/favicon.ico")
+
+@app.route("/getinfo")
+def getinfo():
+    r = requests.post("http://%s" % args.host, auth=(args.user, args.passwd),
+        json={"method": "getinfo",
+              "params": [],
+              "id": 1})
+    return jsonify(getinfo=r.json())
+
+@app.route("/listtransactions")
+def listtransactions():
+    r = requests.post("http://%s" % args.host, auth=(args.user, args.passwd),
+        json={"method": "listtransactions",
+              "params": [],
+              "id": 1})
+    print(r.json())
+    return jsonify(listtransactions=r.json())
+
+if __name__ == "__main__":
+    argparser = argparse.ArgumentParser(description="Development server")
+    argparser.add_argument("-p", "--port", type=int, default=8000, help="Port for HTTP server (default=%d)." % 8000)
+    argparser.add_argument("-l", "--listen", type=str, default="127.0.0.1", help="Listen interface for HTTP server (default=%s)." % "127.0.0.1")
+    argparser.add_argument("-d", '--debug', action="store_true", default=False, help="Debug mode.")
+    argparser.add_argument("-g", "--host", type=str, default="localhost:15715", help="gridcoind RPC host:port (default=%s)." % "localhost:15715")
+    argparser.add_argument("-u", "--user", type=str, help="gridcoind RPC auth username.")
+    argparser.add_argument("-a", "--passwd", type=str, help="gridcoind RPC auth passwd.")
+    args = argparser.parse_args()
+
+    app.config["JSONIFY_PRETTYPRINT_REGULAR"] = args.debug
+    print("Starting server on port %s with debug=%s" % (args.port, args.debug))
+    app.run(host=args.listen, port=args.port, debug=args.debug)

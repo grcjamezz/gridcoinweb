@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>GridCoinWeb</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/transactions.js"></script>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">GridCoinWeb</a>
+              </div>
+              <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="/">Home</a></li>
+                    <li class="active"><a href="/transactions.html">Transactions</a></li>
+                    <li><a href="/peers.html">Peers</a></li>
+                </ul>
+              </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid container-left">
+    <div class="row">
+        <div class="col-md-3 col-squeeze">
+            <div class="container-fluid">
+                <div class="well">
+                    <div class="row">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>TXID</th>
+                                    <th>Account</th>
+                                    <th>Amount</th>
+                                    <th>Category</th>
+                                    <th>Confirmations</th>
+                                    <th>Time</th>
+                                    <th>Received</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transtable">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+                                    <th>Address</th>
+                                    <th>Block Hash</th>
+                                    <th>Block Index</th>
+                                    <th>Block Time</th>
+                                    <th>Watch Only</th>
+                                    <th>Fee</th>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12 footer navbar-inverse navbar-fixed-bottom">
+            <p class="copyright">
+                <a href="https://github.com/scotte/gridcoinweb">GridCoinWeb on Github</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
