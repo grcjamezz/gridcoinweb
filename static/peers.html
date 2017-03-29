@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="/static/js/jquery.min.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
-    <script src="/static/js/home.js"></script>
+    <script src="/static/js/peers.js"></script>
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
     <link href="/static/css/style.css" rel="stylesheet">
 </head>
@@ -28,9 +28,9 @@
               </div>
               <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="/">Home</a></li>
+                    <li><a href="/">Home</a></li>
                     <li><a href="/transactions">Transactions</a></li>
-                    <li><a href="/peers">Peers</a></li>
+                    <li class="active"><a href="/peers">Peers</a></li>
                 </ul>
               </div>
         </div>
@@ -43,31 +43,29 @@
             <div class="container-fluid">
                 <div class="well">
                     <div class="row">
-                        <div class="col-md-6 col-squeeze">
-                            Version: <span id="version"></span>
-                        </div>
-                        <div class="col-md-6 col-squeeze">
-                            Balance: <span id="balance"></span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 col-squeeze">
-                            Blocks: <span id="blocks"></span>
-                        </div>
-                        <div class="col-md-6 col-squeeze">
-                            Connections: <span id="connections"></span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12 col-squeeze">
-                            Unlocked Until: <span id="unlocked_until"></span>
-                        </div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Direction</th>
+                                    <th>Version</th>
+                                    <th>Address</th>
+                                    <th>Ping</th>
+                                    <th>Connected</th>
+                                </tr>
+                            </thead>
+                            <tbody id="peerstable">
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+                                    <th>Ban Score</th>
+                                    <th>Neural</th>
+                                    <th>Last Rx</th>
+                                    <th>Last Tx</th>
 
 <div class="container-fluid">
     <div class="row-fluid">

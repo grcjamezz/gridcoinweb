@@ -12,9 +12,13 @@ app = Flask(__name__)
 def home():
     return app.send_static_file("index.html")
 
-@app.route("/transactions.html")
+@app.route("/transactions")
 def transactions():
     return app.send_static_file("transactions.html")
+
+@app.route("/peers")
+def peers():
+    return app.send_static_file("peers.html")
 
 @app.route("/static/<path>")
 def staticfiles(path):
@@ -30,6 +34,7 @@ def getinfo():
         json={"method": "getinfo",
               "params": [],
               "id": 1})
+    #print(r.json())
     return jsonify(getinfo=r.json())
 
 @app.route("/listtransactions")
@@ -38,8 +43,17 @@ def listtransactions():
         json={"method": "listtransactions",
               "params": [],
               "id": 1})
-    print(r.json())
+    #print(r.json())
     return jsonify(listtransactions=r.json())
+
+@app.route("/getpeerinfo")
+def getpeerinfo():
+    r = requests.post("http://%s" % args.host, auth=(args.user, args.passwd),
+        json={"method": "getpeerinfo",
+              "params": [],
+              "id": 1})
+    #print(r.json())
+    return jsonify(getpeerinfo=r.json())
 
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser(description="Development server")

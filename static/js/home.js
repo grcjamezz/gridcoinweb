@@ -2,7 +2,6 @@ function update_data() {
     $.getJSON(
         "http://localhost:8000/getinfo",
         function(data) {
-            console.log(data)
             $("#version").html(data.getinfo.result["version"]);
             $("#version").removeClass();
             $("#balance").html(data.getinfo.result["balance"]);

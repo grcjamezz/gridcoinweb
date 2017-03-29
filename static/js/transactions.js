@@ -2,20 +2,18 @@ function update_data() {
     $.getJSON(
         "http://localhost:8000/listtransactions",
         function(data) {
-            console.log(data)
-
-            tablehtml="";
-            trans=data.listtransactions.result
+            var tablehtml="";
+            var trans=data.listtransactions.result
             for (var row=trans.length-1; row >= 0; row--) {
                 var account = trans[row].account;
                 if (account == "") {
                     account = "(stake)";
                 }
                 tablehtml += "<tr>";
-                tablehtml += "<td>" + "<a href=\"/txid.html/" +
+                tablehtml += "<td>" + "<a href=\"/txid/" +
                     trans[row].txid + "\"</a>" +
                     trans[row].txid.substring(0,6) + "</td>";
-                tablehtml += "<td>" + "<a href=\"/account.html/" +
+                tablehtml += "<td>" + "<a href=\"/account/" +
                     trans[row].account + "\"</a>" + account + "</td>";
                 tablehtml += "<td>" + trans[row].amount + "</td>";
                 tablehtml += "<td>" + trans[row].category + "</td>";
