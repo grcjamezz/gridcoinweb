@@ -28,3 +28,7 @@ body {
   color: #fff;
   background-color: #666;
 }
+
+.error {
+    color: #aa0000;
+}

@@ -77,7 +77,7 @@ function update_data() {
     ) .fail(function() {
         $("#balance").html("ERROR");
         $("#balance").removeClass();
-        $("#balance").addClass("ERROR");
+        $("#balance").addClass("error");
         $("#stake").html("");
         $("#newmint").html("");
         $("#unlocked_until").html("");
@@ -85,11 +85,11 @@ function update_data() {
 
         $("#transtable").html("ERROR");
         $("#transtable").removeClass();
-        $("#transtable").addClass("ERROR");
+        $("#transtable").addClass("error");
 
         $("#peerstable").html("ERROR");
         $("#peerstable").removeClass();
-        $("#peerstable").addClass("ERROR");
+        $("#peerstable").addClass("error");
     });
 
     setTimeout(update_data,5000);
