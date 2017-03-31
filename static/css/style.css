@@ -24,34 +24,7 @@ body {
     padding-right: 5px;
 }
 
-.OK {
-    color: #00aa00;
-}
-
-.LOW {
-    color: #aa4444;
-}
-
-.HIGH {
-    color: #aa4444;
-}
-
-.DONE {
-    color: #0000aa;
-}
-
-.HOLD {
-    color: #0000aa;
-}
-
-.SHUTDOWN {
-    color: #0000aa;
-}
-
-.ERROR {
-    color: #aa0000;
-}
-
-.ALARM {
-    color: #aa0000;
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
+  color: #fff;
+  background-color: #666;
 }

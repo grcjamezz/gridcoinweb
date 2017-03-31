@@ -34,14 +34,12 @@ def getinfo():
         json={"method": "getinfo",
               "params": [],
               "id": 1})
-    print(r.json())
     getinfo = r.json()
 
     r = requests.post("http://%s" % args.host, auth=(args.user, args.passwd),
         json={"method": "list",
               "params": ["rsa"],
               "id": 1})
-    print(r.json())
     listrsa = r.json()
     return jsonify(getinfo=getinfo, listrsa=listrsa)
 

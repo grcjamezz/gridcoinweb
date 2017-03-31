@@ -19,88 +19,162 @@
         <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                  <span class="sr-only">Toggle navigation</span>
-                  <span class="icon-bar"></span>
-                  <span class="icon-bar"></span>
-                  <span class="icon-bar"></span>
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="#">GridCoinWeb</a>
-              </div>
-              <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li class="active"><a href="/">Home</a></li>
-                    <li><a href="/transactions">Transactions</a></li>
-                    <li><a href="/peers">Peers</a></li>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
+                    <li role="presentation"><a href="#transactions" aria-controls="transactions" role="tab" data-toggle="tab">Transactions</a></li>
+                    <li role="presentation"><a href="#peers" aria-controls="peers" role="tab" data-toggle="tab">Peers</a></li>
                 </ul>
-              </div>
+            </div>
         </div>
     </div>
 </div>
 
-<div class="container-fluid container-left">
-    <div class="row">
-        <div class="col-md-3 col-squeeze">
-            <div class="container-fluid">
-                <div class="well">
-                    <div class="row">
-                        <strong>Wallet</strong>
-                    </div>
-                    <div class="row">
-                        Balance: <span id="balance"></span>
-                    </div>
-                    <div class="row">
-                        Stake: <span id="stake"></span>
-                    </div>
-                    <div class="row">
-                        New Mint: <span id="newmint"></span>
-                    </div>
-                    <div class="row">
-                        Magnitude: <span id="magnitude"></span>
-                    </div>
-                    <div class="row">
-                        Last Paid Block: <span id="lastblockpaid"></span>
-                    </div>
-                    <div class="row">
-                        Est Daily Earnings: <span id="dailyearnings"></span>
-                    </div>
-                    <div class="row">
-                        Tx Fee: <span id="txfee"></span>
-                    </div>
-                    <div class="row">
-                        CPID: <span id="cpid"></span>
-                    </div>
-                    <div class="row">
-                        Unlocked Until: <span id="unlocked_until"></span>
+<div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="home">
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="col-xs-6 col-md-4">
+                    <div class=" panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Wallet</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                Balance: <span id="balance"></span>
+                            </div>
+                            <div class="row">
+                                Stake: <span id="stake"></span>
+                            </div>
+                            <div class="row">
+                                New Mint: <span id="newmint"></span>
+                            </div>
+                            <div class="row">
+                                Magnitude: <span id="magnitude"></span>
+                            </div>
+                            <div class="row">
+                                Last Paid Block: <span id="lastblockpaid"></span>
+                            </div>
+                            <div class="row">
+                                Est Daily Earnings: <span id="dailyearnings"></span>
+                            </div>
+                            <div class="row">
+                                Tx Fee: <span id="txfee"></span>
+                            </div>
+                            <div class="row">
+                                CPID: <span id="cpid"></span>
+                            </div>
+                            <div class="row">
+                                Unlocked Until: <span id="unlocked_until"></span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="well">
-                    <div class="row">
-                        <strong>Client</strong>
-                    <div class="row">
+                <div class="col-xs-6 col-md-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Client</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                Version: <span id="version"></span>
+                            <div class="row">
+                            </div>
+                                Connections: <span id="connections"></span>
+                            </div>
+                        </div>
                     </div>
-                        Version: <span id="version"></span>
-                    <div class="row">
-                    </div>
-                        Connections: <span id="connections"></span>
+                </div>
+                <div class="col-xs-6 col-md-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Block Chain</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                Blocks: <span id="blocks"></span>
+                            </div>
+                            <div class="row">
+                                Stake Difficulty: <span id="posdifficulty"></span>
+                            </div>
+                            <div class="row">
+                                Work Difficulty: <span id="powdifficulty"></span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3 col-squeeze">
-            <div class="container-fluid">
-                <div class="well">
-                    <div class="row">
-                        <strong>Chain</strong>
+    </div>
+
+    <div role="tabpanel" class="tab-pane" id="transactions">
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Transactions</h3>
                     </div>
-                    <div class="row">
-                        Blocks: <span id="blocks"></span>
+                    <div class="panel-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>TXID</th>
+                                    <th>Account</th>
+                                    <th>Amount</th>
+                                    <th>Category</th>
+                                    <th>Confirmations</th>
+                                    <th>Time</th>
+                                    <th>Received</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transtable">
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="row">
-                        Stake Difficulty: <span id="posdifficulty"></span>
+                                    <th>Address</th>
+                                    <th>Block Hash</th>
+                                    <th>Block Index</th>
+                                    <th>Block Time</th>
+                                    <th>Watch Only</th>
+                                    <th>Fee</th>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div role="tabpanel" class="tab-pane" id="peers">
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Peers</h3>
                     </div>
-                    <div class="row">
-                        Work Difficulty: <span id="powdifficulty"></span>
+                    <div class="panel-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Direction</th>
+                                    <th>Version</th>
+                                    <th>Address</th>
+                                    <th>Ping</th>
+                                    <th>Connected</th>
+                                </tr>
+                            </thead>
+                            <tbody id="peerstable">
+                            </tbody>
+                        </table>
                     </div>
+                                    <th>Ban Score</th>
+                                    <th>Neural</th>
+                                    <th>Last Rx</th>
+                                    <th>Last Tx</th>
                 </div>
             </div>
         </div>
