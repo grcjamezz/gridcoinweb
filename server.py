@@ -28,38 +28,33 @@ def staticfiles(path):
 def favicon():
     return app.send_static_file("images/favicon.ico")
 
-@app.route("/getinfo")
-def getinfo():
+@app.route("/update")
+def update():
     r = requests.post("http://%s" % args.host, auth=(args.user, args.passwd),
         json={"method": "getinfo",
               "params": [],
               "id": 1})
-    getinfo = r.json()
+    info = r.json()
 
     r = requests.post("http://%s" % args.host, auth=(args.user, args.passwd),
         json={"method": "list",
               "params": ["rsa"],
               "id": 1})
-    listrsa = r.json()
-    return jsonify(getinfo=getinfo, listrsa=listrsa)
+    rsa = r.json()
 
-@app.route("/gettransactions")
-def listtransactions():
     r = requests.post("http://%s" % args.host, auth=(args.user, args.passwd),
         json={"method": "listtransactions",
               "params": [],
               "id": 1})
-    #print(r.json())
-    return jsonify(listtransactions=r.json())
+    transactions = r.json()
 
-@app.route("/getpeers")
-def getpeerinfo():
     r = requests.post("http://%s" % args.host, auth=(args.user, args.passwd),
         json={"method": "getpeerinfo",
               "params": [],
               "id": 1})
-    #print(r.json())
-    return jsonify(getpeerinfo=r.json())
+    peerinfo = r.json()
+
+    return jsonify(info=info, rsa=rsa, transactions=transactions, peerinfo=peerinfo)
 
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser(description="Development server")

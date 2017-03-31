@@ -1,70 +1,52 @@
 function update_data() {
     $.getJSON(
-        "http://localhost:8000/getinfo",
+        "http://localhost:8000/update",
         function(data) {
-            $("#balance").html(data.getinfo.result.balance);
-            $("#balance").removeClass();
-            $("#stake").html(data.getinfo.result.stake);
-            $("#newmint").html(data.getinfo.result.newmint);
-            $("#magnitude").html(data.listrsa.result[1]["Magnitude (Last Superblock)"]);
-            $("#lastblockpaid").html(data.listrsa.result[1]["Last Block Paid"]);
-            $("#dailyearnings").html(data.listrsa.result[1]["Expected Earnings (Daily)"]);
-            $("#txfee").html(data.getinfo.result.paytxfee);
-            $("#cpid").html(data.listrsa.result[1].CPID);
-            $("#unlocked_until").html(format_timestamp(data.getinfo.result.unlocked_until));
-            $("#version").html(data.getinfo.result.version);
-            $("#connections").html(data.getinfo.result.connections);
-            $("#blocks").html(data.getinfo.result.blocks);
-            $("#posdifficulty").html(data.getinfo.result.difficulty["proof-of-stake"].toFixed(2));
-            $("#powdifficulty").html(data.getinfo.result.difficulty["proof-of-work"].toFixed(2));
-        }
-    ) .fail(function() {
-        $("#balance").html("ERROR");
-        $("#balance").removeClass();
-        $("#balance").addClass("ERROR");
-        $("#stake").html("");
-        $("#newmint").html("");
-        $("#unlocked_until").html("");
-        $("#version").html("ERROR");
-    });
 
-    $.getJSON(
-        "http://localhost:8000/gettransactions",
-        function(data) {
-            var tablehtml="";
-            var trans=data.listtransactions.result
+            // Home
+            $("#balance").html(data.info.result.balance);
+            $("#balance").removeClass();
+            $("#stake").html(data.info.result.stake);
+            $("#newmint").html(data.info.result.newmint);
+            $("#magnitude").html(data.rsa.result[1]["Magnitude (Last Superblock)"]);
+            $("#lastblockpaid").html(data.rsa.result[1]["Last Block Paid"]);
+            $("#dailyearnings").html(data.rsa.result[1]["Expected Earnings (Daily)"]);
+            $("#txfee").html(data.info.result.paytxfee);
+            $("#cpid").html(data.rsa.result[1].CPID);
+            $("#unlocked_until").html(format_timestamp(data.info.result.unlocked_until));
+            $("#version").html(data.info.result.version);
+            $("#connections").html(data.info.result.connections);
+            $("#blocks").html(data.info.result.blocks);
+            $("#posdifficulty").html(data.info.result.difficulty["proof-of-stake"].toFixed(2));
+            $("#powdifficulty").html(data.info.result.difficulty["proof-of-work"].toFixed(2));
+
+            // Transactions
+            var transhtml="";
+            var trans=data.transactions.result
             for (var row=trans.length-1; row >= 0; row--) {
                 var account = trans[row].account;
                 if (account == "") {
                     account = "(stake)";
                 }
-                tablehtml += "<tr>";
-                tablehtml += "<td>" + "<a href=\"/txid/" +
+                transhtml += "<tr>";
+                transhtml += "<td>" + "<a href=\"/txid/" +
                     trans[row].txid + "\"</a>" +
                     trans[row].txid.substring(0,6) + "</td>";
-                tablehtml += "<td>" + "<a href=\"/account/" +
+                transhtml += "<td>" + "<a href=\"/account/" +
                     trans[row].account + "\"</a>" + account + "</td>";
-                tablehtml += "<td>" + trans[row].amount + "</td>";
-                tablehtml += "<td>" + trans[row].category + "</td>";
-                tablehtml += "<td>" + trans[row].confirmations + "</td>";
-                tablehtml += "<td>" + format_timestamp(trans[row].time) + "</td>";
-                tablehtml += "<td>" + format_timestamp(trans[row].timereceived) + "</td>";
-                tablehtml += "</tr>";
+                transhtml += "<td>" + trans[row].amount + "</td>";
+                transhtml += "<td>" + trans[row].category + "</td>";
+                transhtml += "<td>" + trans[row].confirmations + "</td>";
+                transhtml += "<td>" + format_timestamp(trans[row].time) + "</td>";
+                transhtml += "<td>" + format_timestamp(trans[row].timereceived) + "</td>";
+                transhtml += "</tr>";
             }
-            $("#transtable").html(tablehtml);
+            $("#transtable").html(transhtml);
             $("#transtable").removeClass();
-        }
-    ) .fail(function() {
-        $("#transtable").html("ERROR");
-        $("#transtable").removeClass();
-        $("#transtable").addClass("ERROR");
-    });
 
-    $.getJSON(
-        "http://localhost:8000/getpeers",
-        function(data) {
-            var tablehtml="";
-            var peers=data.getpeerinfo.result;
+            // Peers
+            var peershtml="";
+            var peers=data.peerinfo.result;
             //var now=(new Date).getTime()/1000;
             for (var row=0; row < peers.length; row++) {
                 if (peers[row].inbound === true) {
@@ -77,22 +59,34 @@ function update_data() {
                 var ver=peers[row].subver.substring(verdel1+1,verdel2+1);
                 //var lastrecv=now-peers[row].lastrecv;
                 //var lastsend=now-peers[row].lastsend;
-                tablehtml += "<tr>";
-                tablehtml += "<td>" + dir + "</td>";
-                tablehtml += "<td>" + ver + "</td>";
-                tablehtml += "<td>" + peers[row].addr + "</td>";
-                tablehtml += "<td>" + peers[row].pingtime.toFixed(3) + "</td>";
-                tablehtml += "<td>" + format_timestamp(peers[row].conntime) + "</td>";
-                //tablehtml += "<td>" + lastrecv + "</td>";
-                //tablehtml += "<td>" + lastsend + "</td>";
-                //tablehtml += "<td>" + format_timestamp(peers[row].lastrecv) + "</td>";
-                //tablehtml += "<td>" + format_timestamp(peers[row].lastsend) + "</td>";
-                tablehtml += "</tr>";
+                peershtml += "<tr>";
+                peershtml += "<td>" + dir + "</td>";
+                peershtml += "<td>" + ver + "</td>";
+                peershtml += "<td>" + peers[row].addr + "</td>";
+                peershtml += "<td>" + peers[row].pingtime.toFixed(3) + "</td>";
+                peershtml += "<td>" + format_timestamp(peers[row].conntime) + "</td>";
+                //peershtml += "<td>" + lastrecv + "</td>";
+                //peershtml += "<td>" + lastsend + "</td>";
+                //peershtml += "<td>" + format_timestamp(peers[row].lastrecv) + "</td>";
+                //peershtml += "<td>" + format_timestamp(peers[row].lastsend) + "</td>";
+                peershtml += "</tr>";
             }
-            $("#peerstable").html(tablehtml);
+            $("#peerstable").html(peershtml);
             $("#peerstable").removeClass();
         }
     ) .fail(function() {
+        $("#balance").html("ERROR");
+        $("#balance").removeClass();
+        $("#balance").addClass("ERROR");
+        $("#stake").html("");
+        $("#newmint").html("");
+        $("#unlocked_until").html("");
+        $("#version").html("ERROR");
+
+        $("#transtable").html("ERROR");
+        $("#transtable").removeClass();
+        $("#transtable").addClass("ERROR");
+
         $("#peerstable").html("ERROR");
         $("#peerstable").removeClass();
         $("#peerstable").addClass("ERROR");
