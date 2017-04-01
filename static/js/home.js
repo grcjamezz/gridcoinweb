@@ -26,19 +26,17 @@ function update_data() {
             for (var row=trans.length-1; row >= 0; row--) {
                 var account = trans[row].account;
                 if (account == "") {
-                    account = "(stake)";
+                    account = "(unknown)";
                 }
                 transhtml += "<tr>";
                 transhtml += "<td>" + "<a href=\"/txid/" +
                     trans[row].txid + "\"</a>" +
                     trans[row].txid.substring(0,6) + "</td>";
-                transhtml += "<td>" + "<a href=\"/account/" +
-                    trans[row].account + "\"</a>" + account + "</td>";
+                transhtml += "<td>" + account + "</td>";
                 transhtml += "<td>" + trans[row].amount + "</td>";
                 transhtml += "<td>" + trans[row].category + "</td>";
                 transhtml += "<td>" + trans[row].confirmations + "</td>";
                 transhtml += "<td>" + format_timestamp(trans[row].time) + "</td>";
-                transhtml += "<td>" + format_timestamp(trans[row].timereceived) + "</td>";
                 transhtml += "</tr>";
             }
             $("#transtable").html(transhtml);
@@ -73,6 +71,28 @@ function update_data() {
             }
             $("#peerstable").html(peershtml);
             $("#peerstable").removeClass();
+
+            // Addresses
+            var addresseshtml="";
+            var alladdresses=data.addresses.result[0];
+            for (var outer=0; outer < alladdresses.length; outer++) {
+                var addresses=data.addresses.result[outer];
+                for (var row=0; row < addresses.length; row++) {
+                    var account = addresses[row][2];
+                    if (account === undefined) {
+                        account = "(unknown)";
+                    }
+                    addresseshtml += "<tr>";
+                    addresseshtml += "<td>" + "<a target=\"_blank\" href=\"https://gridcoinstats.eu/addresses.php?a=view&id=" +
+                        addresses[row][0] + "\" data-toggle=\"tooltip\" title=\"gridcoinstats.eu\">" +
+                        addresses[row][0] + "</a></td>";
+                    addresseshtml += "<td>" + account + "</td>";
+                    addresseshtml += "<td>" + addresses[row][1] + "</td>";
+                    addresseshtml += "</tr>";
+                }
+            }
+            $("#addresstable").html(addresseshtml);
+            $("#addresstable").removeClass();
         }
     ) .fail(function() {
         $("#balance").html("ERROR");
@@ -90,6 +110,10 @@ function update_data() {
         $("#peerstable").html("ERROR");
         $("#peerstable").removeClass();
         $("#peerstable").addClass("error");
+
+        $("#addresstable").html("ERROR");
+        $("#addresstable").removeClass();
+        $("#addresstable").addClass("error");
     });
 
     setTimeout(update_data,5000);

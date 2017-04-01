@@ -21,8 +21,6 @@
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="#">GridCoinWeb</a>
             </div>
@@ -30,6 +28,7 @@
                 <ul class="nav nav-tabs" role="tablist">
                     <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
                     <li role="presentation"><a href="#transactions" aria-controls="transactions" role="tab" data-toggle="tab">Transactions</a></li>
+                    <li role="presentation"><a href="#addresses" aria-controls="addresses" role="tab" data-toggle="tab">Addresses</a></li>
                     <li role="presentation"><a href="#peers" aria-controls="peers" role="tab" data-toggle="tab">Peers</a></li>
                 </ul>
             </div>
@@ -126,12 +125,11 @@
                             <thead>
                                 <tr>
                                     <th>TXID</th>
-                                    <th>Account</th>
+                                    <th>Address</th>
                                     <th>Amount</th>
                                     <th>Category</th>
                                     <th>Confirmations</th>
                                     <th>Time</th>
-                                    <th>Received</th>
                                 </tr>
                             </thead>
                             <tbody id="transtable">
@@ -144,6 +142,32 @@
                                     <th>Block Time</th>
                                     <th>Watch Only</th>
                                     <th>Fee</th>
+                                    <th>Received</th>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div role="tabpanel" class="tab-pane" id="addresses">
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Addresses</h3>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Address</th>
+                                    <th>Account</th>
+                                    <th>Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody id="addresstable">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

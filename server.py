@@ -12,14 +12,6 @@ app = Flask(__name__)
 def home():
     return app.send_static_file("index.html")
 
-@app.route("/transactions")
-def transactions():
-    return app.send_static_file("transactions.html")
-
-@app.route("/peers")
-def peers():
-    return app.send_static_file("peers.html")
-
 @app.route("/static/<path>")
 def staticfiles(path):
     return app.send_static_file(path)
@@ -54,7 +46,14 @@ def update():
               "id": 1})
     peerinfo = r.json()
 
-    return jsonify(info=info, rsa=rsa, transactions=transactions, peerinfo=peerinfo)
+    r = requests.post("http://%s" % args.host, auth=(args.user, args.passwd),
+        json={"method": "listaddressgroupings",
+              "params": [],
+              "id": 1})
+    addresses = r.json()
+
+    return jsonify(info=info, rsa=rsa, transactions=transactions,
+                   peerinfo=peerinfo, addresses=addresses)
 
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser(description="Development server")
