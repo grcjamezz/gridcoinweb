@@ -23,15 +23,24 @@ function update_data() {
             // Transactions
             var transhtml="";
             var trans=data.transactions.result
+            $("#transdata").empty();
             for (var row=trans.length-1; row >= 0; row--) {
                 var account = trans[row].account;
                 if (account == "") {
                     account = "(unknown)";
                 }
                 transhtml += "<tr>";
-                transhtml += "<td>" + "<a href=\"/txid/" +
-                    trans[row].txid + "\"</a>" +
-                    trans[row].txid.substring(0,6) + "</td>";
+                transhtml += "<td>" + "<a href=\"#\" onClick='fire(\"" +
+                    trans[row].txid + "\");'>" +
+                    trans[row].txid.substring(0,6) + "</a></td>";
+
+                // Add data to hidden txdata element
+                item=document.createElement("div");
+                item.id=trans[row].txid;
+                item.innerHTML=trans[row].txid;
+                $(item).data("txdata", trans[row]);
+                $("#transdata").append(item);
+
                 transhtml += "<td>" + account + "</td>";
                 transhtml += "<td>" + trans[row].amount + "</td>";
                 transhtml += "<td>" + trans[row].category + "</td>";
@@ -114,9 +123,41 @@ function update_data() {
         $("#addresstable").html("ERROR");
         $("#addresstable").removeClass();
         $("#addresstable").addClass("error");
+
+        $("#transdata").empty();
     });
 
     setTimeout(update_data,5000);
+}
+
+function fire(d) {
+    var txdata = $("#"+d).data("txdata");
+    var transtablehtml=""
+    for (var key in txdata) {
+        var value = txdata[key];
+        switch (key) {
+            case "address":
+                value = "<a target=\"_blank\" href=\"https://gridcoinstats.eu/addresses.php?a=view&id=" +
+                    txdata[key] + "\" data-toggle=\"tooltip\" title=\"gridcoinstats.eu\">" +
+                    txdata[key] + "</a>";
+                break;
+            case "txid":
+                value = "<a target=\"_blank\" href=\"https://gridcoinstats.eu/block.php?tx=" +
+                    txdata[key] + "\" data-toggle=\"tooltip\" title=\"gridcoinstats.eu\">" +
+                    txdata[key] + "</a>";
+                break;
+            case "blocktime":
+            case "time":
+            case "timereceived":
+                value = format_timestamp(txdata[key]);
+                break;
+        }
+        transtablehtml += "<tr><td><strong>" + key + "</strong></td>" +
+            "<td>" + value + "</td></tr>";
+    }
+
+    $("#transmodaltable").html(transtablehtml);
+    $("#transmodal").modal("show");
 }
 
 function format_timestamp(timestamp) {
