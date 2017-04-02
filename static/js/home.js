@@ -30,9 +30,15 @@ function update_data() {
                     account = "(unknown)";
                 }
                 transhtml += "<tr>";
-                transhtml += "<td>" + "<a href=\"#\" onClick='fire(\"" +
+                transhtml += "<td>" + "<a href=\"#\" onClick='showtx(\"" +
                     trans[row].txid + "\");'>" +
                     trans[row].txid.substring(0,6) + "</a></td>";
+                transhtml += "<td>" + account + "</td>";
+                transhtml += "<td>" + trans[row].amount + "</td>";
+                transhtml += "<td>" + trans[row].category + "</td>";
+                transhtml += "<td>" + trans[row].confirmations + "</td>";
+                transhtml += "<td>" + format_timestamp(trans[row].time) + "</td>";
+                transhtml += "</tr>";
 
                 // Add data to hidden txdata element
                 item=document.createElement("div");
@@ -40,46 +46,9 @@ function update_data() {
                 item.innerHTML=trans[row].txid;
                 $(item).data("txdata", trans[row]);
                 $("#transdata").append(item);
-
-                transhtml += "<td>" + account + "</td>";
-                transhtml += "<td>" + trans[row].amount + "</td>";
-                transhtml += "<td>" + trans[row].category + "</td>";
-                transhtml += "<td>" + trans[row].confirmations + "</td>";
-                transhtml += "<td>" + format_timestamp(trans[row].time) + "</td>";
-                transhtml += "</tr>";
             }
             $("#transtable").html(transhtml);
             $("#transtable").removeClass();
-
-            // Peers
-            var peershtml="";
-            var peers=data.peerinfo.result;
-            //var now=(new Date).getTime()/1000;
-            for (var row=0; row < peers.length; row++) {
-                if (peers[row].inbound === true) {
-                    var dir = 'inbound';
-                } else {
-                    var dir = 'outbound';
-                }
-                var verdel1=peers[row].subver.indexOf(":");
-                var verdel2=peers[row].subver.indexOf(")/");
-                var ver=peers[row].subver.substring(verdel1+1,verdel2+1);
-                //var lastrecv=now-peers[row].lastrecv;
-                //var lastsend=now-peers[row].lastsend;
-                peershtml += "<tr>";
-                peershtml += "<td>" + dir + "</td>";
-                peershtml += "<td>" + ver + "</td>";
-                peershtml += "<td>" + peers[row].addr + "</td>";
-                peershtml += "<td>" + peers[row].pingtime.toFixed(3) + "</td>";
-                peershtml += "<td>" + format_timestamp(peers[row].conntime) + "</td>";
-                //peershtml += "<td>" + lastrecv + "</td>";
-                //peershtml += "<td>" + lastsend + "</td>";
-                //peershtml += "<td>" + format_timestamp(peers[row].lastrecv) + "</td>";
-                //peershtml += "<td>" + format_timestamp(peers[row].lastsend) + "</td>";
-                peershtml += "</tr>";
-            }
-            $("#peerstable").html(peershtml);
-            $("#peerstable").removeClass();
 
             // Addresses
             var addresseshtml="";
@@ -102,6 +71,47 @@ function update_data() {
             }
             $("#addresstable").html(addresseshtml);
             $("#addresstable").removeClass();
+
+            // Peers
+            var peershtml="";
+            var peers=data.peerinfo.result;
+            $("#peerdata").empty();
+            //var now=(new Date).getTime()/1000;
+            for (var row=0; row < peers.length; row++) {
+                if (peers[row].inbound === true) {
+                    var dir = 'inbound';
+                } else {
+                    var dir = 'outbound';
+                }
+                var verdel1=peers[row].subver.indexOf(":");
+                var verdel2=peers[row].subver.indexOf(")/");
+                var ver=peers[row].subver.substring(verdel1+1,verdel2+1);
+                var hashcode=hash(peers[row].addr);
+
+                //var lastrecv=now-peers[row].lastrecv;
+                //var lastsend=now-peers[row].lastsend;
+                peershtml += "<tr>";
+                peershtml += "<td>" + "<a href=\"#\" onClick='showpeer(\"" +
+                    hashcode + "\");'>" + peers[row].addr + "</a></td>";
+                peershtml += "<td>" + dir + "</td>";
+                peershtml += "<td>" + ver + "</td>";
+                peershtml += "<td>" + peers[row].pingtime.toFixed(3) + "</td>";
+                peershtml += "<td>" + format_timestamp(peers[row].conntime) + "</td>";
+                //peershtml += "<td>" + lastrecv + "</td>";
+                //peershtml += "<td>" + lastsend + "</td>";
+                //peershtml += "<td>" + format_timestamp(peers[row].lastrecv) + "</td>";
+                //peershtml += "<td>" + format_timestamp(peers[row].lastsend) + "</td>";
+                peershtml += "</tr>";
+
+                // Add data to hidden txdata element
+                item=document.createElement("div");
+                item.id=hashcode;
+                item.innerHTML=hashcode;
+                $(item).data("peerdata", peers[row]);
+                $("#peerdata").append(item);
+            }
+            $("#peerstable").html(peershtml);
+            $("#peerstable").removeClass();
         }
     ) .fail(function() {
         $("#balance").html("ERROR");
@@ -127,10 +137,10 @@ function update_data() {
         $("#transdata").empty();
     });
 
-    setTimeout(update_data,5000);
+    //setTimeout(update_data,5000);
 }
 
-function fire(d) {
+function showtx(d) {
     var txdata = $("#"+d).data("txdata");
     var transtablehtml=""
     for (var key in txdata) {
@@ -160,6 +170,26 @@ function fire(d) {
     $("#transmodal").modal("show");
 }
 
+function showpeer(d) {
+    var peerdata = $("#"+d).data("peerdata");
+    var peertablehtml=""
+    for (var key in peerdata) {
+        var value = peerdata[key];
+        switch (key) {
+            case "conntime":
+            case "lastsend":
+            case "lastrecv":
+                value = format_timestamp(peerdata[key]);
+                break;
+        }
+        peertablehtml += "<tr><td><strong>" + key + "</strong></td>" +
+            "<td>" + value + "</td></tr>";
+    }
+
+    $("#peermodaltable").html(peertablehtml);
+    $("#peermodal").modal("show");
+}
+
 function format_timestamp(timestamp) {
     var tsdate = new Date(timestamp*1000);
     var year = tsdate.getFullYear();
@@ -176,6 +206,17 @@ function pad(n, width, z) {
   n = n + '';
   return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
 }
+
+function hash(s) {
+  var hash = 0, i, chr;
+  if (s.length === 0) return hash;
+  for (i = 0; i < s.length; i++) {
+    chr   = s.charCodeAt(i);
+    hash  = ((hash << 5) - hash) + chr;
+    hash |= 0;
+  }
+  return hash;
+};
 
 $(document).ready(function() {
   update_data();
