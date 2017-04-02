@@ -3,6 +3,9 @@ function update_data() {
         "http://localhost:8000/update",
         function(data) {
 
+            // Navbar
+            $("#navbalance").html("GRC " + data.info.result.balance.toFixed(3));
+
             // Home
             $("#balance").html(data.info.result.balance);
             $("#balance").removeClass();
@@ -137,7 +140,7 @@ function update_data() {
         $("#transdata").empty();
     });
 
-    //setTimeout(update_data,5000);
+    setTimeout(update_data,5000);
 }
 
 function showtx(d) {

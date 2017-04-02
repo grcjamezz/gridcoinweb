@@ -25,10 +25,19 @@ body {
 }
 
 .nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
-  color: #fff;
-  background-color: #666;
+  color: #ffffff;
+  background-color: #666666;
 }
 
 .error {
     color: #aa0000;
+}
+
+#navbalance {
+  float: right;
+  height: 50px;
+  font-size: 16px;
+  line-height: 20px;
+  padding: 15px 15px;
+  color: #ffffff;
 }
