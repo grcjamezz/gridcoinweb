@@ -8,20 +8,22 @@ function update_data() {
                 data.info.result === undefined ||
                 data.rsa === undefined ||
                 data.rsa.result === undefined ||
+                data.beacon === undefined ||
+                data.beacon.result === undefined ||
                 data.transactions === undefined ||
                 data.transactions.result === undefined ||
                 data.addresses === undefined ||
                 data.addresses.result === undefined ||
+                data.projects === undefined ||
+                data.projects.result === undefined ||
                 data.peerinfo === undefined ||
                 data.peerinfo.result === undefined) {
 
-                console.log("Data Validation failed");
                 $("#navstatus").html("Data Error");
                 $("#navstatus").removeClass();
                 $("#navstatus").addClass("error");
                 reqfailed();
             } else {
-                console.log("updating page");
                 $("#navstatus").removeClass();
                 $("#navstatus").addClass("success");
                 updatePage(data);
@@ -31,7 +33,6 @@ function update_data() {
         $("#navstatus").html("Request Failed");
         $("#navstatus").removeClass();
         $("#navstatus").addClass("error");
-        console.log("request failed");
         reqfailed();
     });
 
@@ -46,6 +47,11 @@ function updatePage(data) {
     // Home
     var wallettablehtml="";
     var now=(new Date).getTime()/1000;
+    if (now > data.info.result.unlocked_until) {
+        var locked = "Locked";
+    } else {
+        var locked = "Unlocked until " + format_timestamp(data.info.result.unlocked_until);
+    }
     wallettablehtml += "<tr><td><strong>Balance</strong></td><td>" +
                        data.info.result.balance + "</td></tr>";
     wallettablehtml += "<tr><td><strong>Stake</strong></td><td>" +
@@ -62,8 +68,16 @@ function updatePage(data) {
                        data.info.result.paytxfee + "</td></tr>";
     wallettablehtml += "<tr><td><strong>CPID</strong></td><td>" +
                        data.rsa.result[1]["CPID"] + "</td></tr>";
-    wallettablehtml += "<tr><td><strong>Unlocked</strong></td><td>" +
-                       format_timestamp(data.info.result.unlocked_until) + "</td></tr>";
+    wallettablehtml += "<tr><td><strong>Beacon Exists</strong></td><td>" +
+                       data.beacon.result[1]["Beacon Exists"] + "</td></tr>";
+    wallettablehtml += "<tr><td><strong>Beacon Status</strong></td><td>" +
+                       data.beacon.result[1]["Configuration Status"] + "</td></tr>";
+    wallettablehtml += "<tr><td><strong>Beacon Timestamp</strong></td><td>" +
+                       data.beacon.result[1]["Beacon Timestamp"] + "</td></tr>";
+    wallettablehtml += "<tr><td><strong>Lock State</strong></td><td>" +
+                       locked + "</td></tr>";
+    wallettablehtml += "<tr><td><strong>Errors</strong></td><td>" +
+                       data.info.result.errors + "</td></tr>";
     $("#wallettable").html(wallettablehtml);
     $("#wallettable").removeClass();
 
@@ -139,6 +153,24 @@ function updatePage(data) {
     $("#addresstable").html(addresseshtml);
     $("#addresstable").removeClass();
 
+    // Projects
+    var projectshtml="";
+    var allprojects=data.projects.result;
+    // Skip zeroth item
+    for (var row=1; row < allprojects.length; row++) {
+        projectshtml += "<tr>";
+        projectshtml += "<td>" + "<a target=\"_blank\" href=\"" +
+            allprojects[row]["CPID Link"] + "\" data-toggle=\"tooltip\" title=\"boinc.netsoft-online.com\">" +
+            allprojects[row].Project + "</a></td>";
+        projectshtml += "<td>" + allprojects[row].RAC + "</td>";
+        projectshtml += "<td>" + allprojects[row].Team + "</td>";
+        projectshtml += "<td>" + allprojects[row]["Project Settings Valid for Gridcoin"] + "</td>";
+        projectshtml += "<td>" + allprojects[row]["Debug Info"] + "</td>";
+        projectshtml += "</tr>";
+    }
+    $("#projectstable").html(projectshtml);
+    $("#projectstable").removeClass();
+
     // Peers
     var peershtml="";
     var peers=data.peerinfo.result;
@@ -160,6 +192,7 @@ function updatePage(data) {
         peershtml += "<td>" + dir + "</td>";
         peershtml += "<td>" + ver + "</td>";
         peershtml += "<td>" + peers[row].pingtime.toFixed(3) + "</td>";
+        peershtml += "<td>" + format_timestamp(peers[row].conntime) + "</td>";
 
         // Add data to hidden txdata element
         item=document.createElement("div");
@@ -188,13 +221,17 @@ function reqfailed() {
     $("#transtable").removeClass();
     $("#transtable").addClass("error");
 
-    $("#peerstable").html("ERROR");
-    $("#peerstable").removeClass();
-    $("#peerstable").addClass("error");
-
     $("#addresstable").html("ERROR");
     $("#addresstable").removeClass();
     $("#addresstable").addClass("error");
+
+    $("#projectstable").html("ERROR");
+    $("#projectstable").removeClass();
+    $("#projectstable").addClass("error");
+
+    $("#peerstable").html("ERROR");
+    $("#peerstable").removeClass();
+    $("#peerstable").addClass("error");
 
     $("#transdata").empty();
 }

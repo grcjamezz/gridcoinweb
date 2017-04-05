@@ -52,8 +52,21 @@ def update():
               "id": 1})
     addresses = r.json()
 
+    r = requests.post("http://%s" % args.host, auth=(args.user, args.passwd),
+        json={"method": "execute",
+              "params": ["beaconstatus"],
+              "id": 1})
+    beacon = r.json()
+
+    r = requests.post("http://%s" % args.host, auth=(args.user, args.passwd),
+        json={"method": "list",
+              "params": ["cpids"],
+              "id": 1})
+    projects = r.json()
+
     return jsonify(info=info, rsa=rsa, transactions=transactions,
-                   peerinfo=peerinfo, addresses=addresses)
+                   peerinfo=peerinfo, addresses=addresses, beacon=beacon,
+                   projects=projects)
 
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser(description="Development server")
