@@ -74,8 +74,8 @@ if __name__ == "__main__":
     argparser.add_argument("-l", "--listen", type=str, default="127.0.0.1", help="Listen interface for HTTP server (default=%s)." % "127.0.0.1")
     argparser.add_argument("-d", '--debug', action="store_true", default=False, help="Debug mode.")
     argparser.add_argument("-g", "--host", type=str, default="localhost:15715", help="gridcoind RPC host:port (default=%s)." % "localhost:15715")
-    argparser.add_argument("-u", "--user", type=str, help="gridcoind RPC auth username.")
-    argparser.add_argument("-a", "--passwd", type=str, help="gridcoind RPC auth passwd.")
+    argparser.add_argument("-u", "--user", type=str, required=True, help="gridcoind RPC auth username.")
+    argparser.add_argument("-a", "--passwd", type=str, required=True, help="gridcoind RPC auth passwd.")
     args = argparser.parse_args()
 
     app.config["JSONIFY_PRETTYPRINT_REGULAR"] = args.debug
