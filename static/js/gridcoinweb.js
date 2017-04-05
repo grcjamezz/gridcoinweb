@@ -36,7 +36,7 @@ function update_data() {
         reqfailed();
     });
 
-    //setTimeout(update_data,5000);
+    setTimeout(update_data,30000);
 }
 
 function updatePage(data) {
