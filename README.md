@@ -49,7 +49,9 @@ it running.
 
 The data displayed in this application is not at parity with the gridcoin UI -
 pull requests are appreciated and accepted! There's a lot of data available in
-the [RPC API](http://wiki.gridcoin.us/RPC_commands).
+the [RPC API](http://wiki.gridcoin.us/RPC_commands). It's also worth noting
+that the goal of this project is **not** to replicate all functionality
+available in the main UI.
 
 There's a horribly minimal (read: nearly nonexistent) level of exception and
 error handling, logging, and feedback. This needs to be vastly improved.
