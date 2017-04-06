@@ -15,13 +15,21 @@ and is nicer than manually typing RPC commands and decoding the JSON.
 **gridcoinweb** refreshes it's data every 30 seconds, so you can keep it
 running and it's always up to date.
 
+![gridcoinweb.png](.README/gridcoinweb.png)
+
+Note that **gridcoinweb** is developed independently from gridcoin and is not
+an official gridcoin project. I built it because it is useful to me, but other
+people in the gridcoin community might find it useful as well. This project
+can be as official or not as the gridcoin community chooses it to be. :-)
+
 Status
 ======
 Still very much a work in progress. Keep an eye on the issues list for the
-project, and please feel free to contribute. The data displayed in this app
-is not at parity with the gridcoin UI - pull requests are appreciated and
-accepted! There's a lot of data available in the
-[RPC API](http://wiki.gridcoin.us/RPC_commands).
+project, and please feel free to contribute.
+
+The data displayed in this application is not at parity with the gridcoin UI -
+pull requests are appreciated and accepted! There's a lot of data available in
+the [RPC API](http://wiki.gridcoin.us/RPC_commands).
 
 There's a horribly minimal (read: nearly nonexistent) level of exception and
 error handling, logging, and feedback. This needs to be vastly improved.
@@ -123,5 +131,8 @@ respective owners:
 * css/bootstrap.min.css - [bootstrap](http://getbootstrap.com)
 * js/jquery.min.js - [jquery](https://jquery.com)
 
-This software is provided free and with no warrantee - users accept all risk
+**gridcoinweb** is developed independently from gridcoin and is not
+an official gridcoin project.
+
+This software is provided free and with no warranty - users accept all risk
 of using it.
