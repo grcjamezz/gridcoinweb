@@ -94,9 +94,9 @@ function updatePage(data) {
     pow=data.info.result.difficulty["proof-of-work"].toFixed(2);
     blocktablehtml += "<tr><td><strong>Height</strong></td><td>" +
                        data.info.result.blocks + "</td></tr>";
-    blocktablehtml += "<tr><td><strong>Proof Stake Difficulty</strong></td><td>" +
+    blocktablehtml += "<tr><td><strong>Proof of Stake Difficulty</strong></td><td>" +
                        data.info.result.difficulty["proof-of-stake"].toFixed(2) + "</td></tr>";
-    blocktablehtml += "<tr><td><strong>Proof Work Difficulty</strong></td><td>" +
+    blocktablehtml += "<tr><td><strong>Proof of Work Difficulty</strong></td><td>" +
                        data.info.result.difficulty["proof-of-work"].toFixed(2) + "</td></tr>";
     $("#blocktable").html(blocktablehtml);
     $("#blocktable").removeClass();
