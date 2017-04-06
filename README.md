@@ -4,6 +4,17 @@ gridcoinweb
 [gridcoin wallet](https://gridcoin.us). **gridcoinweb** is written in Python
 and Javascript using flask, bootstrap and jquery.
 
+You might wonder why **gridcoinweb** exists since the wallet has a UI. If
+you are thinking this, you are probably running the wallet on your local
+desktop machine - so this project isn't for you.
+
+However, if, like me, you are running the wallet on a headless Linux server,
+**gridcoinweb** gives a nice, simple, web interface for monitoring your wallet,
+and is nicer than manually typing RPC commands and decoding the JSON.
+
+**gridcoinweb** refreshes it's data every 30 seconds, so you can keep it
+running and it's always up to date.
+
 Status
 ======
 Still very much a work in progress. Keep an eye on the issues list for the
@@ -11,6 +22,9 @@ project, and please feel free to contribute. The data displayed in this app
 is not at parity with the gridcoin UI - pull requests are appreciated and
 accepted! There's a lot of data available in the
 [RPC API](http://wiki.gridcoin.us/RPC_commands).
+
+There's a horribly minimal (read: nearly nonexistent) level of exception and
+error handling, logging, and feedback. This needs to be vastly improved.
 
 Dependencies
 ============
@@ -63,6 +77,9 @@ Starting server on port 8000 with debug=False
 
 Then, connect with your browser to http://localhost:8000.
 
+Setting rpcuser and rpcpassword is required - you'll need to set them in the
+gridcoinresearchd configuration file.
+
 Security
 ========
 
@@ -74,6 +91,24 @@ contains sensitive information that is sent in plain text. This is a security
 risk and could result in theft of your data and/or wallet. Don't run this on
 an open network out of your control, and for the love of Pete don't run this
 across the public internet.
+
+Well then, how do you use **gridcoinweb** if it's so insecure? That's not hard,
+run **gridcoinweb** on the same host as the wallet, then use an SSH tunnel
+from your desktop machine with the browser.
+
+* First up, start the gridcoinweb server as illustrated above on the system
+running gridcoinresearchd.
+
+* Second, ssh from the machine where you'll start your browser, tunneling port
+15715 like this (this works from Windows 10 just fine, using Bash/WSL. I assume
+putty and other SSH clients support port forwarding also, but they have not
+been tested by me. Create a github issue if you have success/failure):
+
+```
+$ ssh -L 15715:localhost:15715 REMOTE_SERVER
+```
+
+* Finally, browse to http://localhost:8000.
 
 License
 =======
