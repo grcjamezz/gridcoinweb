@@ -1,10 +1,7 @@
 from flask import Flask, jsonify
 import argparse
-import json
-import os
 import requests
 
-#from monitor import config
 
 app = Flask(__name__)
 
@@ -22,6 +19,7 @@ def favicon():
 
 @app.route("/update")
 def update():
+    # TODO factor these into a function
     r = requests.post("http://%s" % args.host, auth=(args.user, args.passwd),
         json={"method": "getinfo",
               "params": [],
