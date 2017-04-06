@@ -22,6 +22,23 @@ an official gridcoin project. I built it because it is useful to me, but other
 people in the gridcoin community might find it useful as well. This project
 can be as official or not as the gridcoin community chooses it to be. :-)
 
+Features
+========
+
+As of today, **gridcoinweb** can do the following:
+* Monitor general state of your wallet, client, and the chain (see the
+screenshot).
+* Show the last 10 transactions, with an additional detail pane that also
+links out to the address and tx explorer at gridcoinstats.eu.
+* Show your addresses, with links out to the address explorer at
+gridcoinstats.eu.
+* List your BOINC projects and RAC, with links out to boinc.netsoft-online.com
+stats.
+* Show all connected peers, inbound and outbound with additional detail pane.
+
+Please feel free to help me add more features - contributions are great, and I
+welcome project collaborators.
+
 Status
 ======
 Still very much a work in progress. Keep an eye on the issues list for the
