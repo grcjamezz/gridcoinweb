@@ -27,6 +27,9 @@ Status
 Still very much a work in progress. Keep an eye on the issues list for the
 project, and please feel free to contribute.
 
+Having said that, it works great and I've been using it daily since I've had
+it running.
+
 The data displayed in this application is not at parity with the gridcoin UI -
 pull requests are appreciated and accepted! There's a lot of data available in
 the [RPC API](http://wiki.gridcoin.us/RPC_commands).
@@ -37,15 +40,15 @@ error handling, logging, and feedback. This needs to be vastly improved.
 Dependencies
 ============
 **gridcoinweb** has been developed and tested on Debian Linux, but should
-work anywhere the necessary Python packages are available. It will work
-with either Python 3 or 2.7.
+work anywhere the necessary Python packages are available (it has been tested
+inside Windows 10 Bash/WSL). It will work with either Python 3 or 2.7.
 
 **gridcoinweb** requires the following dependencies:
 
 * flask - (python3-flask or python-flask Debian package)
 * requests - (python3-requests or python-requests Debian package)
 
-Bundled version of [bootstrap](http://getbootstrap.com) and
+Bundled versions of [bootstrap](http://getbootstrap.com) and
 [jquery](http://jquery.com) are included.
 
 Usage
@@ -54,7 +57,10 @@ Usage
 As a flask application, **gridcoinweb** should really be run with a WSGI
 container such as gunicorn, however for development/testing purposes you can
 use the built-in flask development server via the "run" script provided
-(edit to use python 2.7 instead of python 3 if required):
+(edit to use python 2.7 instead of python 3 if required).
+
+I've just been using the development server myself, personally, and it works
+well enough - certainly well enough to give this a try!
 
 ```
 usage: server.py [-h] [-p PORT] [-l LISTEN] [-d] [-g HOST] -u USER
@@ -98,9 +104,9 @@ The data passed between your browser and **gridcoinweb** is not secured and
 contains sensitive information that is sent in plain text. This is a security
 risk and could result in theft of your data and/or wallet. Don't run this on
 an open network out of your control, and for the love of Pete don't run this
-across the public internet.
+across the public internet without some sort of secure tunnel.
 
-Well then, how do you use **gridcoinweb** if it's so insecure? That's not hard,
+Well then, how do you use **gridcoinweb** if it's so insecure? That's not hard -
 run **gridcoinweb** on the same host as the wallet, then use an SSH tunnel
 from your desktop machine with the browser.
 
