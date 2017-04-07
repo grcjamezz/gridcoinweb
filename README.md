@@ -12,7 +12,7 @@ However, if, like me, you are running the wallet on a headless Linux server,
 **gridcoinweb** gives a nice, simple, web interface for monitoring your wallet,
 and is nicer than manually typing RPC commands and decoding the JSON.
 
-**gridcoinweb** refreshes it's data every 30 seconds, so you can keep it
+**gridcoinweb** refreshes its data every 30 seconds, so you can keep it
 running and it's always up to date.
 
 ![gridcoinweb.png](.README/gridcoinweb.png)
