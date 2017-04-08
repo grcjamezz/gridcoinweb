@@ -19,52 +19,37 @@ def favicon():
 
 @app.route("/update")
 def update():
-    # TODO factor these into a function
-    r = requests.post("http://%s" % args.host, auth=(args.user, args.passwd),
-        json={"method": "getinfo",
-              "params": [],
-              "id": 1})
-    info = r.json()
-
-    r = requests.post("http://%s" % args.host, auth=(args.user, args.passwd),
-        json={"method": "list",
-              "params": ["rsa"],
-              "id": 1})
-    rsa = r.json()
-
-    r = requests.post("http://%s" % args.host, auth=(args.user, args.passwd),
-        json={"method": "listtransactions",
-              "params": [],
-              "id": 1})
-    transactions = r.json()
-
-    r = requests.post("http://%s" % args.host, auth=(args.user, args.passwd),
-        json={"method": "getpeerinfo",
-              "params": [],
-              "id": 1})
-    peerinfo = r.json()
-
-    r = requests.post("http://%s" % args.host, auth=(args.user, args.passwd),
-        json={"method": "listaddressgroupings",
-              "params": [],
-              "id": 1})
-    addresses = r.json()
-
-    r = requests.post("http://%s" % args.host, auth=(args.user, args.passwd),
-        json={"method": "execute",
-              "params": ["beaconstatus"],
-              "id": 1})
-    beacon = r.json()
-
-    r = requests.post("http://%s" % args.host, auth=(args.user, args.passwd),
-        json={"method": "list",
-              "params": ["cpids"],
-              "id": 1})
-    projects = r.json()
+    s = requests.Session()
+    info = fetch_json(s, method="getinfo")
+    rsa = fetch_json(s, method="list", params=["rsa"])
+    transactions = fetch_json(s, method="listtransactions")
+    peerinfo = fetch_json(s, method="getpeerinfo")
+    addresses = fetch_json(s, method="listaddressgroupings")
+    beacon = fetch_json(s, method="execute", params=["beaconstatus"])
+    projects = fetch_json(s, method="list", params=["cpids"])
 
     return jsonify(info=info, rsa=rsa, transactions=transactions,
                    peerinfo=peerinfo, addresses=addresses, beacon=beacon,
                    projects=projects)
+
+
+def fetch_json(session, method, params=[], id=1):
+    auth = None
+    if args.user and args.passwd:
+        auth = (args.user, args.passwd)
+
+    r = session.post("http://%s" % args.host, auth=auth,
+                     json={"method": method,
+                           "params": params,
+                           "id": id})
+    # TODO: Encapsulate happy path and error into a single object model
+    if r.status_code == 200:
+        return r.json()
+
+    return {"gridcoinweb": {"status": r.status_code,
+                            "response": r.text}
+           }
+
 
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser(description="Development server")
