@@ -82,8 +82,8 @@ I've just been using the development server myself, personally, and it works
 well enough - certainly well enough to give this a try!
 
 ```
-usage: server.py [-h] [-p PORT] [-l LISTEN] [-d] [-g HOST] -u USER
-                 -a PASSWD
+usage: server.py [-h] [-p PORT] [-l LISTEN] [-d] [-g HOST] [-u USER]
+                 [-a PASSWD]
 
 Development server
 
@@ -110,8 +110,7 @@ Starting server on port 8000 with debug=False
 
 Then, connect with your browser to http://localhost:8000.
 
-Setting rpcuser and rpcpassword is required - you'll need to set them in the
-gridcoinresearchd configuration file.
+Setting rpcuser and rpcpassword is optional but recommended.
 
 Security
 ========
