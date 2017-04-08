@@ -1,6 +1,7 @@
 from flask import Flask, jsonify
 import argparse
 import requests
+import sys
 import traceback
 
 
@@ -33,6 +34,17 @@ def update():
                    peerinfo=peerinfo, addresses=addresses, beacon=beacon,
                    projects=projects)
 
+def validate_conn():
+    s = requests.Session()
+    info = fetch_json(s, method="getinfo")
+    if info is not None and info["status"] is not None and info["status"] == 200:
+        # TODO: Use logging
+        print("Good connection to gridcoin wallet")
+        return True
+
+    print(info)
+    print("ERROR! Unable to communicate with gridcoin wallet.")
+    return False
 
 def fetch_json(session, method, params=None, rpcid=1):
     json = None
@@ -82,6 +94,8 @@ if __name__ == "__main__":
     argparser.add_argument("-a", "--passwd", type=str, required=True, help="gridcoind RPC auth passwd.")
     args = argparser.parse_args()
 
+    if validate_conn() is False:
+        sys.exit(1)
     app.config["JSONIFY_PRETTYPRINT_REGULAR"] = args.debug
     print("Starting server on port %s with debug=%s" % (args.port, args.debug))
     app.run(host=args.listen, port=args.port, debug=args.debug)
