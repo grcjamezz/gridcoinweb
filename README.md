@@ -116,6 +116,12 @@ gridcoinresearchd configuration file.
 Security
 ========
 
+How can you trust that **gridcoinweb** won't steal your GRC or do bad things?
+Honestly, you can't if you just download and run it without looking at it. As
+**gridcoinweb** gains some community momentum and trust this will be less of
+an issue, but **please** look at the source code so you can see what this app
+does - such as the exact RPC calls it makes to your wallet.
+
 **gridcoinweb** should be run on the host where your gridcoin wallet is running.
 Running it across the network poses a security risk - please don't do this!
 
