@@ -1,6 +1,7 @@
 from flask import Flask, jsonify
 import argparse
 import requests
+import traceback
 
 
 app = Flask(__name__)
@@ -33,21 +34,41 @@ def update():
                    projects=projects)
 
 
-def fetch_json(session, method, params=[], id=1):
+def fetch_json(session, method, params=None, rpcid=1):
+    json = None
+    raw = None
     auth = None
+    status = 0
+    if params is None:
+        rpcparams = []
+    else:
+        rpcparams = params
+
     if args.user and args.passwd:
         auth = (args.user, args.passwd)
 
-    r = session.post("http://%s" % args.host, auth=auth,
-                     json={"method": method,
-                           "params": params,
-                           "id": id})
-    # TODO: Encapsulate happy path and error into a single object model
-    if r.status_code == 200:
-        return r.json()
+    try:
+        result = session.post("http://%s" % args.host, auth=auth,
+                              json={"method": method,
+                                    "params": rpcparams,
+                                    "id": rpcid})
+        status = result.status_code
+        if status == 200:
+            json = result.json()
+        else:
+            raw = result.text
+            # TODO: Replace with logging, once added
+            print("Error: %s(%s) returned %d. Output:%s" %
+                  (method, ",".join(rpcparams), status, raw))
+    except Exception as e:
+        raw = traceback.format_exc()
+        # TODO: Replace with logging, once added
+        print("Error: %s(%s) Exception:%s" % (method, ",".join(rpcparams), raw))
 
-    return {"gridcoinweb": {"status": r.status_code,
-                            "response": r.text}
+    return {"method": "%s(%s)" % (method, ",".join(rpcparams)),
+            "status": status,
+            "json": json,
+            "raw": raw
            }
 
 

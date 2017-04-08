@@ -1,28 +1,35 @@
 function update_data() {
+    $("#navstatus").html("Wait...");
+    $("#navstatus").removeClass();
+    $("#navstatus").addClass("warning");
+
     $.getJSON(
         "http://localhost:8000/update",
         function(data) {
-            // Some basic vaidation
-            if (data === undefined ||
-                data.info === undefined ||
-                data.info.result === undefined ||
-                data.rsa === undefined ||
-                data.rsa.result === undefined ||
-                data.beacon === undefined ||
-                data.beacon.result === undefined ||
-                data.transactions === undefined ||
-                data.transactions.result === undefined ||
-                data.addresses === undefined ||
-                data.addresses.result === undefined ||
-                data.projects === undefined ||
-                data.projects.result === undefined ||
-                data.peerinfo === undefined ||
-                data.peerinfo.result === undefined) {
 
+            // Some basic validation
+            var datums = ["info", "rsa", "beacon", "transactions", "addresses",
+                         "projects", "peerinfo"];
+            var error = false;
+            if (data !== undefined) {
+                for (idx=0; idx<datums.length; idx++) {
+                    if (data[datums[idx]] === undefined ||
+                        data[datums[idx]].json === undefined ||
+                        data[datums[idx]].json === null ||
+                        data[datums[idx]].json.result === undefined) {
+                            error = true;
+                            break;
+                    }
+                }
+            } else {
+                error = true
+            }
+
+            if (error === true) {
                 $("#navstatus").html("Data Error");
                 $("#navstatus").removeClass();
                 $("#navstatus").addClass("error");
-                reqfailed();
+                reqfailed(data, datums);
             } else {
                 $("#navstatus").removeClass();
                 $("#navstatus").addClass("success");
@@ -33,7 +40,7 @@ function update_data() {
         $("#navstatus").html("Request Failed");
         $("#navstatus").removeClass();
         $("#navstatus").addClass("error");
-        reqfailed();
+        reqfailed(null, null);
     });
 
     setTimeout(update_data,30000);
@@ -41,69 +48,69 @@ function update_data() {
 
 function updatePage(data) {
     // Navbar
-    $("#navbalance").html("GRC " + data.info.result.balance.toFixed(3));
+    $("#navbalance").html("GRC " + data.info.json.result.balance.toFixed(3));
     $("#navstatus").html("Connected");
 
     // Home
     var wallettablehtml="";
     var now=(new Date).getTime()/1000;
-    if (now > data.info.result.unlocked_until) {
+    if (now > data.info.json.result.unlocked_until) {
         var locked = "Locked";
     } else {
-        var locked = "Unlocked until " + format_timestamp(data.info.result.unlocked_until);
+        var locked = "Unlocked until " + format_timestamp(data.info.json.result.unlocked_until);
     }
     wallettablehtml += "<tr><td><strong>Balance</strong></td><td>" +
-                       data.info.result.balance + "</td></tr>";
+                       data.info.json.result.balance + "</td></tr>";
     wallettablehtml += "<tr><td><strong>Stake</strong></td><td>" +
-                       data.info.result.stake + "</td></tr>";
+                       data.info.json.result.stake + "</td></tr>";
     wallettablehtml += "<tr><td><strong>New Mint</strong></td><td>" +
-                       data.info.result.newmint + "</td></tr>";
+                       data.info.json.result.newmint + "</td></tr>";
     wallettablehtml += "<tr><td><strong>Magnitude</strong></td><td>" +
-                       data.rsa.result[1]["Magnitude (Last Superblock)"] + "</td></tr>";
+                       data.rsa.json.result[1]["Magnitude (Last Superblock)"] + "</td></tr>";
     wallettablehtml += "<tr><td><strong>Last Paid Block</strong></td><td>" +
-                       data.rsa.result[1]["Last Block Paid"] + "</td></tr>";
+                       data.rsa.json.result[1]["Last Block Paid"] + "</td></tr>";
     wallettablehtml += "<tr><td><strong>Est Daily Earnings</strong></td><td>" +
-                       data.rsa.result[1]["Expected Earnings (Daily)"] + "</td></tr>";
+                       data.rsa.json.result[1]["Expected Earnings (Daily)"] + "</td></tr>";
     wallettablehtml += "<tr><td><strong>Tx Fee</strong></td><td>" +
-                       data.info.result.paytxfee + "</td></tr>";
+                       data.info.json.result.paytxfee + "</td></tr>";
     wallettablehtml += "<tr><td><strong>CPID</strong></td><td>" +
-                       data.rsa.result[1]["CPID"] + "</td></tr>";
+                       data.rsa.json.result[1]["CPID"] + "</td></tr>";
     wallettablehtml += "<tr><td><strong>Beacon Exists</strong></td><td>" +
-                       data.beacon.result[1]["Beacon Exists"] + "</td></tr>";
+                       data.beacon.json.result[1]["Beacon Exists"] + "</td></tr>";
     wallettablehtml += "<tr><td><strong>Beacon Status</strong></td><td>" +
-                       data.beacon.result[1]["Configuration Status"] + "</td></tr>";
+                       data.beacon.json.result[1]["Configuration Status"] + "</td></tr>";
     wallettablehtml += "<tr><td><strong>Beacon Timestamp</strong></td><td>" +
-                       data.beacon.result[1]["Beacon Timestamp"] + "</td></tr>";
+                       data.beacon.json.result[1]["Beacon Timestamp"] + "</td></tr>";
     wallettablehtml += "<tr><td><strong>Lock State</strong></td><td>" +
                        locked + "</td></tr>";
     wallettablehtml += "<tr><td><strong>Errors</strong></td><td>" +
-                       data.info.result.errors + "</td></tr>";
+                       data.info.json.result.errors + "</td></tr>";
     $("#wallettable").html(wallettablehtml);
     $("#wallettable").removeClass();
 
     var clienttablehtml="";
     clienttablehtml += "<tr><td><strong>Version</strong></td><td>" +
-                       data.info.result.version + "</td></tr>";
+                       data.info.json.result.version + "</td></tr>";
     clienttablehtml += "<tr><td><strong>Connections</strong></td><td>" +
-                       data.info.result.connections + "</td></tr>";
+                       data.info.json.result.connections + "</td></tr>";
     $("#clienttable").html(clienttablehtml);
     $("#clienttable").removeClass();
 
     var blocktablehtml="";
-    pos=data.info.result.difficulty["proof-of-stake"].toFixed(2);
-    pow=data.info.result.difficulty["proof-of-work"].toFixed(2);
+    pos=data.info.json.result.difficulty["proof-of-stake"].toFixed(2);
+    pow=data.info.json.result.difficulty["proof-of-work"].toFixed(2);
     blocktablehtml += "<tr><td><strong>Height</strong></td><td>" +
-                       data.info.result.blocks + "</td></tr>";
+                       data.info.json.result.blocks + "</td></tr>";
     blocktablehtml += "<tr><td><strong>Proof of Stake Difficulty</strong></td><td>" +
-                       data.info.result.difficulty["proof-of-stake"].toFixed(2) + "</td></tr>";
+                       data.info.json.result.difficulty["proof-of-stake"].toFixed(2) + "</td></tr>";
     blocktablehtml += "<tr><td><strong>Proof of Work Difficulty</strong></td><td>" +
-                       data.info.result.difficulty["proof-of-work"].toFixed(2) + "</td></tr>";
+                       data.info.json.result.difficulty["proof-of-work"].toFixed(2) + "</td></tr>";
     $("#blocktable").html(blocktablehtml);
     $("#blocktable").removeClass();
 
     // Transactions
     var transhtml="";
-    var trans=data.transactions.result
+    var trans=data.transactions.json.result
     $("#transdata").empty();
     for (var row=trans.length-1; row >= 0; row--) {
         var account = trans[row].account;
@@ -133,9 +140,9 @@ function updatePage(data) {
 
     // Addresses
     var addresseshtml="";
-    var alladdresses=data.addresses.result[0];
+    var alladdresses=data.addresses.json.result[0];
     for (var outer=0; outer < alladdresses.length; outer++) {
-        var addresses=data.addresses.result[outer];
+        var addresses=data.addresses.json.result[outer];
         for (var row=0; row < addresses.length; row++) {
             var account = addresses[row][2];
             if (account === undefined) {
@@ -155,7 +162,7 @@ function updatePage(data) {
 
     // Projects
     var projectshtml="";
-    var allprojects=data.projects.result;
+    var allprojects=data.projects.json.result;
     // Skip zeroth item
     for (var row=1; row < allprojects.length; row++) {
         projectshtml += "<tr>";
@@ -173,7 +180,7 @@ function updatePage(data) {
 
     // Peers
     var peershtml="";
-    var peers=data.peerinfo.result;
+    var peers=data.peerinfo.json.result;
     $("#peerdata").empty();
     for (var row=0; row < peers.length; row++) {
         if (peers[row].inbound === true) {
@@ -203,10 +210,45 @@ function updatePage(data) {
     }
     $("#peerstable").html(peershtml);
     $("#peerstable").removeClass();
+    $("#errorspanel").hide();
 }
 
-function reqfailed() {
-    $("#navbalance").html("GRC ???");
+function reqfailed(data, datums) {
+    var errorshtml="";
+    if (data !== undefined && data !== null && datums != null) {
+        for (idx=0; idx<datums.length; idx++) {
+            var method = "Unknown";
+            var status = "Unknown";
+            var message = "Unknown";
+            if (data[datums[idx]] !== undefined) {
+                if (data[datums[idx]].method !== undefined) {
+                    method = data[datums[idx]].method;
+                }
+                if (data[datums[idx]].status !== undefined) {
+                    status = data[datums[idx]].status;
+                }
+                if (data[datums[idx]].raw !== undefined &&
+                    data[datums[idx]].raw !== null) {
+                    message = data[datums[idx]].raw;
+                } else if (data[datums[idx]].json !== undefined) {
+                    message = JSON.stringify(data[datums[idx]].json);
+                }
+            } else {
+                method = datums[idx];
+                message = "Data was undefined.";
+            }
+            errorshtml += "<tr><td>" + method + "</td>" +
+                        "<td>" + status + "</td>" +
+                        "<td>" + message + "</td>";
+        }
+    } else {
+        errorshtml += "<tr><td></td><td></td><td>Error: Unable to connect "+
+                      "to gridcoinweb.</td></tr>";
+    }
+    $("#errorstable").html(errorshtml);
+    $("#errorspanel").show();
+
+    $("#navbalance").html("");
     $("#wallettable").html("ERROR");
     $("#wallettable").removeClass();
     $("#wallettable").addClass("error");

@@ -33,6 +33,10 @@ body {
     color: #aa0000;
 }
 
+.warning {
+    color: #aaaa00;
+}
+
 .success {
     color: #00ff00;
 }
