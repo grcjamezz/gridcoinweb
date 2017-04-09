@@ -13,7 +13,7 @@ However, if, like me, you are running the wallet on a headless Linux server,
 and is nicer than manually typing RPC commands and decoding the JSON.
 
 **gridcoinweb** refreshes its data every 30 seconds, so you can keep it
-running and it's always up to date.
+running and it updates automatically.
 
 ![gridcoinweb.png](.README/gridcoinweb.png)
 
