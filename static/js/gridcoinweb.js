@@ -60,7 +60,7 @@ function updatePage(data) {
         var locked = "Unlocked until " + format_timestamp(data.info.json.result.unlocked_until);
     }
     wallettablehtml += "<tr><td><strong>Balance</strong></td><td>" +
-                       data.info.json.result.balance + "</td></tr>";
+                       data.info.json.result.balance.toFixed(8) + "</td></tr>";
     wallettablehtml += "<tr><td><strong>Stake</strong></td><td>" +
                        data.info.json.result.stake + "</td></tr>";
     wallettablehtml += "<tr><td><strong>New Mint</strong></td><td>" +
@@ -122,7 +122,7 @@ function updatePage(data) {
             trans[row].txid + "\");'>" +
             trans[row].txid.substring(0,6) + "</a></td>";
         transhtml += "<td>" + account + "</td>";
-        transhtml += "<td>" + trans[row].amount + "</td>";
+        transhtml += "<td>" + trans[row].amount.toFixed(8) + "</td>";
         transhtml += "<td>" + trans[row].category + "</td>";
         transhtml += "<td>" + trans[row].confirmations + "</td>";
         transhtml += "<td>" + format_timestamp(trans[row].time) + "</td>";
@@ -293,6 +293,9 @@ function showtx(d) {
                 value = "<a target=\"_blank\" href=\"https://gridcoinstats.eu/block.php?tx=" +
                     txdata[key] + "\" data-toggle=\"tooltip\" title=\"gridcoinstats.eu\">" +
                     txdata[key] + "</a>";
+                break;
+            case "amount":
+                value = txdata[key].toFixed(8);
                 break;
             case "blocktime":
             case "time":
