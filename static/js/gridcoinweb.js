@@ -4,7 +4,7 @@ function update_data() {
     $("#navstatus").addClass("warning");
 
     $.getJSON(
-        "http://localhost:8000/update",
+        "/update",
         function(data) {
 
             // Some basic validation

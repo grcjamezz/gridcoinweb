@@ -1,0 +1,9 @@
+# This file is only needed for running within a WSGI container such as
+# gunicorn. To use this configuration, rename it to appconfig.py and
+# edit with the correct values for your gridcoin wallet daemon.
+
+args = {
+           'host': 'localhost:15715',
+	   'user': None,
+	   'passwd': None
+       }
