@@ -58,11 +58,11 @@ class App(Flask):
                 json = result.json()
             else:
                 raw = result.text
-                self.log.error("Error: %s(%s) returned %d. Output:%s" %
+                self.log.error("%s(%s) returned %d. Output:%s" %
                       (method, ",".join(rpcparams), status, raw))
         except Exception as e:
             raw = traceback.format_exc()
-            self.log.error("Error: %s(%s) Exception:%s" % (method, ",".join(rpcparams), raw))
+            self.log.error("%s(%s) Exception:%s" % (method, ",".join(rpcparams), raw))
 
         return {"method": "%s(%s)" % (method, ",".join(rpcparams)),
                 "status": status,
@@ -74,7 +74,6 @@ app = App(__name__)
 
 @app.before_first_request
 def configure():
-    app.log.error("YO")
     if app.args is None:
         app.args = Config()
         import appconfig

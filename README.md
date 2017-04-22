@@ -78,8 +78,10 @@ container such as gunicorn, however for development/testing purposes you can
 use the built-in flask development server via the "run" script provided
 (edit to use python 2.7 instead of python 3 if required).
 
-I've just been using the development server myself, personally, and it works
-well enough - certainly well enough to give this a try!
+Development Server
+-----------------
+
+Running with the development server is quick and easy.
 
 ```
 usage: server.py [-h] [-p PORT] [-l LISTEN] [-d] [-g HOST] [-u USER]
@@ -111,6 +113,28 @@ Starting server on port 8000 with debug=False
 Then, connect with your browser to http://localhost:8000.
 
 Setting rpcuser and rpcpassword is optional but recommended.
+
+Gunicorn
+--------
+
+To run **gridcoinweb** with the gunicorn WSGI container, you'll need to
+install the appropriate gunicorn package. For Debian, use the gunicorn
+(Python 2.7) or gunicorn3 (Python 3) package.
+
+The WSGI runner does not support command-line parameters for the gridcoin
+wallet daemon, instead appconfig.py is used. Rename appconfig.py_dist to
+appconfig.py and update it out with the appropriate values for your wallet.
+
+Then, start gunicorn. Example:
+
+```
+$ gunicorn --access-logfile=- --log-file=- --bind=localhost:8000 server:app
+```
+
+Note that while the code will attempt to validate the wallet connection on the
+first request, gunicorn is designed to keep the python server running, so it
+won't exit if validation fails. Instead, you'll see HTTP 401 Authorization
+Failed error messages in the UI if appconfig.py is not configured correctly.
 
 Security
 ========
